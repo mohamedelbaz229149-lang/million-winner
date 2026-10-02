@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>من سيربح المليون، مراجعة الرياضيات</title>
+<style>
+:root{--gold:#f5c542;--gold2:#ffdf7e;--navy:#0b1440;--navy2:#16236b;--line:#6f8cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,'Noto Naskh Arabic',Arial,sans-serif;min-height:100vh;color:#fff;background:radial-gradient(ellipse at 50% 30%,#2a2f8f 0%,#10154a 45%,#05081f 100%);overflow-x:hidden}
+#rays{position:fixed;inset:-50%;background:repeating-conic-gradient(from 0deg,rgba(120,140,255,.07) 0 6deg,transparent 6deg 18deg);animation:spin 80s linear infinite;pointer-events:none;z-index:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wrap{position:relative;z-index:1;max-width:1250px;margin:0 auto;padding:14px 16px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.logo{display:flex;align-items:center;gap:12px}
+.disc{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a5bd6,#0b1440 70%);border:3px solid var(--gold);display:grid;place-items:center;box-shadow:0 0 18px rgba(245,197,66,.5);font-weight:900;color:var(--gold);font-size:22px}
+.logo b{font-size:clamp(20px,3vw,28px);color:var(--gold);text-shadow:0 0 12px rgba(245,197,66,.5)}
+.tb{background:rgba(255,255,255,.08);border:2px solid var(--line);color:#fff;border-radius:12px;padding:6px 12px;font-family:inherit;font-weight:800;cursor:pointer;font-size:15px}
+.game{display:grid;grid-template-columns:1fr 280px;gap:18px}
+@media(max-width:900px){.game{grid-template-columns:1fr}.ladder{order:2}}
+.stage{display:flex;flex-direction:column;gap:16px}
+.lifes{display:flex;gap:12px;justify-content:center}
+.life{width:92px;height:58px;border-radius:50%;border:3px solid var(--line);background:radial-gradient(circle,#2b3cb0,#0b1440);color:#fff;font-weight:900;font-size:18px;cursor:pointer;font-family:inherit;position:relative;transition:transform .15s}
+.life:hover{transform:scale(1.06)}
+.life small{display:block;font-size:11px;font-weight:700;opacity:.85}
+.life.used{opacity:.35;cursor:default}
+.life.used::after{content:'';position:absolute;inset:8px 6px;background:linear-gradient(135deg,transparent 46%,#ff3b3b 46% 54%,transparent 54%)}
+.lesson{text-align:center;color:var(--gold2);font-weight:800;font-size:16px}
+.bar{position:relative;background:linear-gradient(180deg,#1a2a8a,#0b1440);border:3px solid var(--line);clip-path:polygon(4% 0,96% 0,100% 50%,96% 100%,4% 100%,0 50%);padding:22px 7%;text-align:center;box-shadow:0 0 20px rgba(111,140,255,.4)}
+.qbar{min-height:130px;display:grid;place-items:center;font-size:clamp(20px,2.6vw,30px);font-weight:800;line-height:1.8}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.opts{grid-template-columns:1fr}}
+.opt{cursor:pointer;display:flex;align-items:center;gap:10px;justify-content:flex-start;text-align:right;font-size:clamp(18px,2.2vw,26px);font-weight:800;padding:16px 8%;min-height:72px;transition:filter .2s}
+.opt:hover{filter:brightness(1.25)}
+.opt .k{color:var(--gold);font-weight:900;min-width:34px}
+.opt.hide{visibility:hidden}
+.opt.sel{background:linear-gradient(180deg,#ffb347,#e07b00);border-color:#ffd08a;color:#1b1000}.opt.sel .k{color:#fff}
+.opt.ok{background:linear-gradient(180deg,#3ddc84,#128c3e);border-color:#b9ffd4;color:#fff;animation:blink .35s 4}.opt.ok .k{color:#fff}
+.opt.bad{background:linear-gradient(180deg,#ff5a5a,#a51515);border-color:#ffb3b3}
+@keyframes blink{50%{filter:brightness(1.8)}}
+.n{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 4px}
+.fr span:first-child{border-bottom:3px solid currentColor;padding:0 4px}
+.acts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{font-family:inherit;font-weight:900;font-size:20px;padding:12px 28px;border-radius:40px;border:3px solid var(--gold);background:linear-gradient(180deg,#2b3cb0,#0b1440);color:var(--gold);cursor:pointer}
+.btn.gold{background:linear-gradient(180deg,#ffe28a,#d89b00);color:#2a1a00}
+.sol{display:none;background:rgba(10,20,70,.85);border:2px dashed var(--gold);border-radius:18px;padding:14px 18px;font-size:clamp(17px,2vw,22px);line-height:1.9;font-weight:700}
+.sol.show{display:block;animation:pop .5s}
+.sol b{color:var(--gold)}
+.ladder{background:linear-gradient(180deg,rgba(20,30,110,.9),rgba(8,12,50,.95));border:3px solid var(--line);border-radius:18px;padding:10px;align-self:start}
+.rung{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;border-radius:10px;font-weight:800;font-size:17px;color:#f0b400}
+.rung .n{color:#9fb0ff;font-size:14px;min-width:26px}
+.rung.safe{color:#fff}
+.rung.done{color:#62e39a}
+.rung.cur{background:linear-gradient(90deg,#ffb347,#e07b00);color:#1b1000;box-shadow:0 0 14px rgba(255,179,71,.7)}
+.rung.cur .n{color:#1b1000}
+.modal{position:fixed;inset:0;background:rgba(0,0,20,.75);display:none;align-items:center;justify-content:center;z-index:30;padding:16px}
+.modal.show{display:flex}
+.box{background:linear-gradient(180deg,#1a2a8a,#0b1440);border:3px solid var(--gold);border-radius:24px;padding:26px;max-width:620px;width:100%;text-align:center;animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+.box h2{color:var(--gold);font-size:clamp(24px,3.4vw,36px);margin-bottom:12px}
+.box p{font-size:clamp(18px,2.2vw,24px);font-weight:700;line-height:1.8;margin-bottom:14px}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.aud{display:flex;gap:16px;justify-content:center;align-items:flex-end;height:230px;margin:10px 0 16px}
+.aud div{display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:900}
+.aud i{display:block;width:54px;background:linear-gradient(180deg,var(--gold2),#d89b00);border-radius:8px 8px 0 0;height:0;transition:height 1.4s cubic-bezier(.2,1.2,.4,1)}
+#money{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:25;pointer-events:none}
+#money.show{display:flex;background:radial-gradient(circle,rgba(5,8,31,.92) 0%,rgba(5,8,31,.75) 45%,rgba(5,8,31,0) 75%)}
+#money .amt{font-size:clamp(60px,12vw,150px);font-weight:900;color:var(--gold);text-shadow:0 0 30px rgba(245,197,66,.8),0 6px 0 #7a5200;animation:zoom 1.6s cubic-bezier(.2,1.6,.4,1)}
+#money .cur{font-size:clamp(26px,4vw,44px);font-weight:900;color:#fff;margin-top:-10px}
+@keyframes zoom{0%{transform:scale(.2);opacity:0}30%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+.coin{position:fixed;top:-40px;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,#f5c542 45%,#b37b00);border:2px solid #8a5d00;z-index:24;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(720deg)}}
+.start{text-align:center;padding:30px 10px}
+.bigdisc{width:min(300px,60vw);height:min(300px,60vw);margin:0 auto 18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4a5bd6,#0b1440 70%);border:6px solid var(--gold);display:grid;place-items:center;box-shadow:0 0 50px rgba(245,197,66,.55);animation:pulse 2.4s ease-in-out infinite}
+.bigdisc b{font-size:clamp(28px,5vw,46px);color:var(--gold);line-height:1.4;text-shadow:0 0 14px rgba(245,197,66,.6)}
+@keyframes pulse{50%{box-shadow:0 0 80px rgba(245,197,66,.85)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px auto;max-width:900px}
+.chips span{border:2px solid var(--line);border-radius:20px;padding:5px 14px;font-weight:700;background:rgba(255,255,255,.06)}
+.credit{display:inline-block;margin-top:16px;border:2px solid var(--gold);border-radius:18px;padding:8px 22px;color:var(--gold2);font-weight:800;font-size:clamp(16px,2vw,21px);background:rgba(0,0,0,.25)}
+.foot{position:fixed;bottom:0;left:0;right:0;text-align:center;padding:6px;font-weight:800;color:var(--gold2);background:rgba(5,8,31,.7);z-index:5;font-size:15px}
+</style>
+</head>
+<body>
+<div id="rays"></div>
+<div class="wrap">
+ <div class="top"><div class="logo"><div class="disc">م</div><b>من سيربح المليون؟</b></div><div><button class="tb" id="mute" onclick="toggleMute()">🔊 الصوت</button> <button class="tb" onclick="fsx()">⛶ ملء الشاشة</button></div></div>
+ <div id="view"></div>
+</div>
+<div class="foot">إعداد الأستاذ محمد الباز • معلم الرياضيات</div>
+<div class="modal" id="modal"><div class="box" id="mbox"></div></div>
+<div id="money"><div class="amt" id="mamt"></div><div class="cur">ريال</div></div>
+<script>
+const A=d=>String(d).replace(/[0-9]/g,c=>'٠١٢٣٤٥٦٧٨٩'[c]).replace(/\./g,'٫');
+const T=s=>String(s).replace(/\d+(?:\.\d+)?/g,m=>'<span class="n">'+A(m)+'</span>');
+const FR=(a,b)=>`<span class="fr"><span>${A(a)}</span><span>${A(b)}</span></span>`;
+const KEYS=['أ','ب','ج','د'];
+const LADDER=[100,200,300,500,1000,2000,4000,8000,16000,32000,64000,125000,250000,500000,1000000];
+const SAFE=[4,9];
+const LESSONS=['القيمة المنزلية ضمن البلايين','المقارنة بين الأعداد','الكسور الاعتيادية والعشرية','القيمة المنزلية ضمن أجزاء من الألف','مقارنة الكسور العشرية','تقريب الأعداد والكسور العشرية','خصائص الجمع','أنماط الضرب'];
+
+/* each level has two questions; the first option is always the correct one (options are shuffled on screen) */
+const BANK=[
+ [{l:6,q:'ما ناتج: 25 + 0 ؟',o:['25','0','250','26'],e:'أي عدد نجمع إليه صفرًا يبقى كما هو، وهذه خاصية العنصر المحايد في الجمع. إذن <b>25 + 0 = 25</b>'},
+  {l:7,q:'ما ناتج: 3 × 90 ؟',o:['270','27','2700','93'],e:'الحقيقة الأساسية <b>3 × 9 = 27</b>، ونكتب صفرًا واحدًا عن يمينها فيصبح الناتج <b>270</b>'}],
+ [{l:2,q:`ما الكسر العشري الذي يساوي ${FR(7,10)} ؟`,o:['0.7','0.07','7.10','7.0'],e:'سبعة أجزاء من عشرة تُكتب <b>0.7</b>'},
+  {l:1,q:'أي الأعداد الآتية هو الأكبر؟',o:['45398','45389','45000','43985'],e:'نقارن من اليسار: الأرقام متساوية حتى منزلة العشرات، و 9 أكبر من 8، إذن <b>45398</b> هو الأكبر'}],
+ [{l:0,q:'ما قيمة الرقم 7 في العدد 374512098 ؟',o:['70000000','7000000','700000000','7000'],e:'الرقم 7 في منزلة عشرات الملايين، فقيمته <b>70000000</b>'},
+  {l:5,q:'قرّب العدد 785 إلى أقرب عشرة.',o:['790','780','800','700'],e:'رقم الآحاد 5، لذا نقرّب إلى الأعلى: <b>790</b>'}],
+ [{l:4,q:'أي الكسور العشرية الآتية هو الأكبر؟',o:['0.4','0.39','0.399','0.09'],e:'نقارن الأجزاء من عشرة: 4 أكبر من 3 ومن 0، إذن <b>0.4</b> هو الأكبر، ولا يهم عدد الأرقام بعد الفاصلة'},
+  {l:3,q:'ما منزلة الرقم 5 في العدد 2.385 ؟',o:['أجزاء من الألف','أجزاء من المئة','أجزاء من عشرة','الآحاد'],e:'بعد الفاصلة: 3 أجزاء من عشرة، و 8 أجزاء من المئة، و <b>5 أجزاء من الألف</b>'}],
+ [{l:6,q:'الجملة ( 17 + 8 ) + 2 = 17 + ( 8 + 2 ) مثال على خاصية:',o:['التجميع','الإبدال','العنصر المحايد','الطرح'],e:'غيّرنا طريقة تجميع الأعداد بالأقواس وبقي الناتج كما هو، وهذه خاصية <b>التجميع</b>'},
+  {l:7,q:'ما ناتج: 6 × 7000 ؟',o:['42000','4200','420000','4270'],e:'الحقيقة الأساسية <b>6 × 7 = 42</b>، ونكتب ثلاثة أصفار: <b>42000</b>'}],
+ [{l:2,q:'أي الكسور الاعتيادية الآتية يساوي 0.25 ؟',o:[FR(25,100),FR(25,10),FR(2,5),FR(25,1000)],e:`0.25 تعني 25 جزءًا من مئة، أي ${FR(25,100)}`},
+  {l:1,q:'رتّب الأعداد من الأصغر إلى الأكبر:',o:['3456 ، 3465 ، 3546 ، 3645','3465 ، 3456 ، 3546 ، 3645','3456 ، 3546 ، 3465 ، 3645','3645 ، 3546 ، 3465 ، 3456'],e:'نقارن منزلة المئات أولًا ثم العشرات: <b>3456 ، 3465 ، 3546 ، 3645</b>'}],
+ [{l:5,q:'قرّب 3.041 إلى أقرب جزء من عشرة.',o:['3.0','3.1','3.04','4.0'],e:'رقم الأجزاء من عشرة 0، والرقم الذي عن يمينه 4 أقل من 5، لذا يبقى كما هو: <b>3.0</b>'},
+  {l:0,q:'ما الصيغة القياسية للعدد: خمسة بلايين وثلاثمئة مليون وأربعون ألفًا ؟',o:['5300040000','5030040000','5300400000','5304000000'],e:'خمسة بلايين = 5000000000، وثلاثمئة مليون = 300000000، وأربعون ألفًا = 40000، والمجموع <b>5300040000</b>'}],
+ [{l:4,q:'اختر ما يكمل الجملة: 3.07 ○ 3.7',o:['أصغر من','أكبر من','يساوي','لا يمكن المقارنة'],e:'الآحاد متساوية، ونقارن الأجزاء من عشرة: 0 أصغر من 7، إذن <b>3.07 أصغر من 3.7</b>'},
+  {l:3,q:'ما الصيغة القياسية للعدد: أربعة وخمسة وثلاثون جزءًا من الألف ؟',o:['4.035','4.35','4.0035','4.305'],e:'خمسة وثلاثون جزءًا من الألف = 0.035، إذن العدد <b>4.035</b>'}],
+ [{l:6,q:'استعمل خصائص الجمع لإيجاد الناتج ذهنيًا: 75 + 27 + 25',o:['127','117','137','102'],e:'نبدّل ونجمّع: ( 75 + 25 ) + 27 = 100 + 27 = <b>127</b>'},
+  {l:7,q:'ما ناتج: 40 × 500 ؟',o:['20000','2000','200000','900'],e:'الحقيقة الأساسية <b>4 × 5 = 20</b>، وفي العاملين 3 أصفار، فالناتج <b>20000</b>'}],
+ [{l:5,q:'وحدة الميجابايت تساوي 1048576 بايت. قرّب هذا العدد إلى أقرب ألف.',o:['1049000','1050000','1048600','1000000'],e:'رقم الآلاف 8، والرقم عن يمينه 5، لذا نقرّب إلى الأعلى: <b>1049000</b>'},
+  {l:2,q:'أي مما يأتي يساوي 0.03 ؟',o:[FR(3,100),FR(3,10),FR(3,1000),FR(30,10)],e:`0.03 تعني 3 أجزاء من مئة، أي ${FR(3,100)}`}],
+ [{l:3,q:'ما قيمة الرقم 6 في العدد 4.586 ؟',o:['0.006','0.06','0.6','6'],e:'الرقم 6 في منزلة الأجزاء من الألف، فقيمته <b>0.006</b>'},
+  {l:4,q:'رتّب من الأكبر إلى الأصغر: 2.35 ، 2.53 ، 2.3 ، 2.05',o:['2.53 ، 2.35 ، 2.3 ، 2.05','2.53 ، 2.3 ، 2.35 ، 2.05','2.05 ، 2.3 ، 2.35 ، 2.53','2.35 ، 2.53 ، 2.05 ، 2.3'],e:'نقارن الأجزاء من عشرة ثم من مئة: <b>2.53 ، 2.35 ، 2.3 ، 2.05</b>، و 2.3 = 2.30 أصغر من 2.35'}],
+ [{l:7,q:'ما ناتج: 800 × 500 ؟',o:['400000','40000','4000000','1300'],e:'الحقيقة الأساسية <b>8 × 5 = 40</b>، ونكتب 4 أصفار بعدها: <b>400000</b>، وانتبه أن صفر الـ 40 يبقى'},
+  {l:0,q:'في العدد 98765432105، ما الرقم الموجود في منزلة عشرات البلايين؟',o:['9','8','7','5'],e:'العدد فيه 11 رقمًا، فأول رقم من اليسار 9 في منزلة <b>عشرات البلايين</b>'}],
+ [{l:4,q:'أي الأعداد الآتية يقع بين 0.6 و 0.7 ؟',o:['0.65','0.59','0.71','0.07'],e:'0.60 < <b>0.65</b> < 0.70، أما البقية فخارج هذه الفترة'},
+  {l:6,q:'استعمل خصائص الجمع لإيجاد الناتج ذهنيًا: 0.3 + 1.2 + 0.7',o:['2.2','2.1','1.12','2.02'],e:'نجمع 0.3 و 0.7 أولًا فيكون 1، ثم 1 + 1.2 = <b>2.2</b>'}],
+ [{l:6,q:'أوجد الناتج ذهنيًا: 27 + 65 + 33 + 35',o:['160','150','170','260'],e:'نجمّع: ( 27 + 33 ) + ( 65 + 35 ) = 60 + 100 = <b>160</b>'},
+  {l:7,q:'ما العدد المجهول؟ 30 × ⬜ = 21000',o:['700','70','7000','7'],e:'3 × 7 = 21، ونحتاج 3 أصفار في الناتج، وفي 30 صفر واحد، إذن المجهول <b>700</b>'}],
+ [{l:3,q:'ما أكبر عدد عشري يمكن تكوينه من الأرقام 3 ، 0 ، 7 ، 5 باستعمال كل رقم مرة واحدة، على أن تكون ثلاثة أرقام بعد الفاصلة؟',o:['7.530','7.503','7.350','5.730'],e:'نضع أكبر رقم في الآحاد 7، ثم الأكبر فالأكبر: <b>7.530</b>'},
+  {l:7,q:'كم صفرًا في ناتج: 50 × 8000 ؟',o:['5','4','3','6'],e:'5 × 8 = 40 وفيها صفر، وفي العاملين 4 أصفار، فالناتج 400000 وفيه <b>5 أصفار</b>'}]
+];
+
+let lvl=0,cur=null,order=[],sel=null,locked=false,used={f:0,p:0,a:0},muted=false,ac,drone=null;
+const V=document.getElementById('view');
+
+/* ---------- sound ---------- */
+function actx(){ac=ac||new(window.AudioContext||window.webkitAudioContext)();return ac}
+function tone(f,d,type='sine',g=.15,t0=0){if(muted)return;try{const c=actx(),o=c.createOscillator(),v=c.createGain();o.type=type;o.frequency.value=f;o.connect(v);v.connect(c.destination);const t=c.currentTime+t0;v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(g,t+.02);v.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d+.05)}catch(e){}}
+const SFX={
+ q(){[130.8,155.6,196].forEach(f=>tone(f,1.6,'sawtooth',.05));tone(523,1.2,'triangle',.08,.1)},
+ lock(){tone(98,1.2,'sawtooth',.12);tone(196,1.2,'square',.05);tone(392,.6,'triangle',.08,.05)},
+ ok(){[523,659,784,1047].forEach((f,i)=>tone(f,.5,'triangle',.14,i*.1));tone(1319,1.2,'triangle',.12,.45)},
+ bad(){tone(220,.5,'sawtooth',.14);tone(165,.8,'sawtooth',.14,.35)},
+ coin(){for(let i=0;i<6;i++){tone(1760,.25,'sine',.08,i*.09);tone(2637,.2,'sine',.05,i*.09)}},
+ click(){tone(700,.08,'square',.06)},
+ life(){[392,523,659].forEach((f,i)=>tone(f,.4,'triangle',.1,i*.08))},
+ win(){[523,659,784,1047,784,1047,1319,1568].forEach((f,i)=>tone(f,.6,'triangle',.14,i*.14))}
+};
+function startDrone(){stopDrone();if(muted)return;try{const c=actx(),o=c.createOscillator(),l=c.createOscillator(),g=c.createGain(),lg=c.createGain();o.type='sawtooth';o.frequency.value=65.4;l.frequency.value=1.6;lg.gain.value=.025;l.connect(lg);lg.connect(g.gain);g.gain.value=.035;o.connect(g);g.connect(c.destination);o.start();l.start();drone={o,l,g}}catch(e){}}
+function stopDrone(){if(drone){try{drone.o.stop();drone.l.stop()}catch(e){}drone=null}}
+function toggleMute(){muted=!muted;document.getElementById('mute').textContent=muted?'🔇 الصوت':'🔊 الصوت';if(muted)stopDrone();else if(cur&&!locked)startDrone()}
+function fsx(){const d=document;if(!d.fullscreenElement)d.documentElement.requestFullscreen&&d.documentElement.requestFullscreen();else d.exitFullscreen&&d.exitFullscreen()}
+
+/* ---------- screens ---------- */
+function startScreen(){stopDrone();cur=null;V.innerHTML=`<div class="start"><div class="bigdisc"><b>من سيربح<br>المليون؟</b></div><h2 style="color:#ffdf7e;font-size:clamp(22px,3vw,32px)">مراجعة الرياضيات للصف الخامس</h2><div class="chips">${LESSONS.map(x=>`<span>${x}</span>`).join('')}</div><button class="btn gold" onclick="newGame()">ابدأ اللعب 🎮</button><br><div class="credit">✨ إعداد الأستاذ: محمد الباز ✨<br>معلم الرياضيات</div></div>`}
+function newGame(){lvl=0;used={f:0,p:0,a:0};SFX.life();ask()}
+function ladderHTML(){return LADDER.map((m,i)=>({m,i})).reverse().map(({m,i})=>`<div class="rung${SAFE.includes(i)?' safe':''}${i<lvl?' done':''}${i===lvl?' cur':''}"><span class="n">${A(i+1)}</span><span>${i<lvl?'✓ ':''}${fmt(m)}</span></div>`).join('')}
+function fmt(m){return A(Number(m).toLocaleString('en').replace(/,/g,'٬'))}
+function ask(){
+ const pool=BANK[lvl];cur=pool[Math.floor(Math.random()*pool.length)];sel=null;locked=false;
+ order=[0,1,2,3];for(let i=3;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+ V.innerHTML=`<div class="game"><div class="stage">
+  <div class="lifes"><button class="life${used.f?' used':''}" onclick="fifty()">٥٠:٥٠<small>حذف إجابتين</small></button><button class="life${used.p?' used':''}" onclick="phone()">📞<small>اتصال بصديق</small></button><button class="life${used.a?' used':''}" onclick="audience()">👥<small>رأي الجمهور</small></button></div>
+  <div class="lesson">السؤال ${A(lvl+1)} مقابل ${fmt(LADDER[lvl])} ريال • درس: ${LESSONS[cur.l]}</div>
+  <div class="bar qbar"><div>${T(cur.q)}</div></div>
+  <div class="opts">${order.map((oi,k)=>`<div class="bar opt" id="o${k}" onclick="pick(${k})"><span class="k">${KEYS[k]}:</span><span>${T(cur.o[oi])}</span></div>`).join('')}</div>
+  <div class="sol" id="sol"></div>
+  <div class="acts" id="acts"><button class="btn" onclick="walk()">انسحب بـ ${fmt(lvl?LADDER[lvl-1]:0)} ريال</button></div>
+ </div><div class="ladder">${ladderHTML()}</div></div>`;
+ SFX.q();setTimeout(startDrone,600);
+}
+function pick(k){if(locked)return;const el=document.getElementById('o'+k);if(el.classList.contains('hide'))return;SFX.click();
+ document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');sel=k;
+ modal(`<h2>هل هذه إجابتك النهائية؟</h2><p>${KEYS[k]}: ${T(cur.o[order[k]])}</p><div class="acts"><button class="btn gold" onclick="final()">نعم، نهائية</button><button class="btn" onclick="cancelSel()">لا، سأفكر</button></div>`)}
+function cancelSel(){closeModal();document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));sel=null}
+function final(){closeModal();locked=true;stopDrone();SFX.lock();
+ const right=order.indexOf(0),k=sel;
+ setTimeout(()=>{
+  document.getElementById('o'+right).classList.add('ok');
+  const sol=document.getElementById('sol');sol.innerHTML=`<b>الحل:</b> ${T(cur.e)}`;
+  if(k===right){SFX.ok();document.getElementById('o'+k).classList.remove('sel');
+   setTimeout(()=>{showMoney(LADDER[lvl]);sol.classList.add('show');
+    const last=lvl===LADDER.length-1;
+    document.getElementById('acts').innerHTML=last?`<button class="btn gold" onclick="winScreen()">🏆 استلم المليون</button>`:`<button class="btn gold" onclick="lvl++;ask()">السؤال التالي ⬅</button>`;
+    lvl++;document.querySelector('.ladder').innerHTML=ladderHTML();lvl--;},900);
+  }else{SFX.bad();const e=document.getElementById('o'+k);e.classList.remove('sel');e.classList.add('bad');sol.classList.add('show');
+   const safe=SAFE.filter(i=>i<lvl).pop();const won=safe===undefined?0:LADDER[safe];
+   document.getElementById('acts').innerHTML=`<button class="btn gold" onclick="endScreen(${won},false)">انتهت اللعبة، تربح ${fmt(won)} ريال</button>`}
+ },2600)}
+function walk(){if(locked)return;stopDrone();const won=lvl?LADDER[lvl-1]:0;const right=order.indexOf(0);locked=true;document.getElementById('o'+right).classList.add('ok');const sol=document.getElementById('sol');sol.innerHTML=`<b>الحل:</b> ${T(cur.e)}`;sol.classList.add('show');document.getElementById('acts').innerHTML=`<button class="btn gold" onclick="endScreen(${won},true)">انسحبت بـ ${fmt(won)} ريال</button>`}
+function fifty(){if(used.f||locked)return;used.f=1;SFX.life();const wrong=order.map((oi,k)=>({oi,k})).filter(x=>x.oi!==0);wrong.sort(()=>Math.random()-.5).slice(0,2).forEach(x=>document.getElementById('o'+x.k).classList.add('hide'));document.querySelectorAll('.life')[0].classList.add('used')}
+function visible(){return [0,1,2,3].filter(k=>!document.getElementById('o'+k).classList.contains('hide'))}
+function phone(){if(used.p||locked)return;used.p=1;SFX.life();document.querySelectorAll('.life')[1].classList.add('used');
+ const right=order.indexOf(0),vis=visible();const sure=Math.random()<.85;const guess=sure?right:vis.filter(k=>k!==right)[0];const pct=sure?70+Math.floor(Math.random()*25):40+Math.floor(Math.random()*15);
+ modal(`<h2>📞 اتصال بصديق</h2><p>صديقك يفكر قليلًا...</p><p id="fr" style="opacity:0;transition:opacity .8s">🗣️ «أعتقد أن الإجابة هي <b style="color:#f5c542">${KEYS[guess]}</b>، وأنا متأكد بنسبة ${A(pct)}٪»</p><button class="btn gold" onclick="closeModal()">شكرًا</button>`);
+ setTimeout(()=>{const f=document.getElementById('fr');if(f)f.style.opacity=1},1500)}
+function audience(){if(used.a||locked)return;used.a=1;SFX.life();document.querySelectorAll('.life')[2].classList.add('used');
+ const right=order.indexOf(0),vis=visible();let p=[0,0,0,0];let rest=100;const top=45+Math.floor(Math.random()*30);p[right]=top;rest-=top;
+ const others=vis.filter(k=>k!==right);others.forEach((k,i)=>{const v=i===others.length-1?rest:Math.floor(Math.random()*rest);p[k]=v;rest-=v});
+ modal(`<h2>👥 رأي الجمهور</h2><div class="aud">${[0,1,2,3].map(k=>`<div><span>${A(p[k])}٪</span><i data-h="${p[k]*2}"></i><span style="color:#f5c542">${KEYS[k]}</span></div>`).join('')}</div><button class="btn gold" onclick="closeModal()">حسنًا</button>`);
+ setTimeout(()=>document.querySelectorAll('.aud i').forEach(i=>i.style.height=i.dataset.h+'px'),80)}
+function modal(h){document.getElementById('mbox').innerHTML=h;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function showMoney(m){const M=document.getElementById('money');document.getElementById('mamt').textContent=fmt(m);M.classList.add('show');SFX.coin();
+ for(let i=0;i<40;i++){const c=document.createElement('div');c.className='coin';c.style.left=Math.random()*100+'vw';c.style.animationDuration=(1.6+Math.random()*1.6)+'s';c.style.animationDelay=Math.random()*.5+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}
+ setTimeout(()=>M.classList.remove('show'),2000)}
+function endScreen(won,walked){stopDrone();cur=null;V.innerHTML=`<div class="start"><div class="bigdisc"><b>${fmt(won)}<br><small style="font-size:.6em">ريال</small></b></div><h2 style="color:#ffdf7e;font-size:clamp(24px,3.4vw,38px)">${walked?'قرار حكيم! انسحبت بمبلغ رائع':'أحسنت المحاولة يا بطل'}</h2><p style="font-size:22px;margin:10px 0 18px">وصلت إلى السؤال ${A(lvl+1)} من ${A(15)}</p><button class="btn gold" onclick="newGame()">🔁 لاعب جديد</button> <button class="btn" onclick="startScreen()">🏠 الشاشة الرئيسية</button><br><div class="credit">✨ إعداد الأستاذ: محمد الباز ✨</div></div>`}
+function winScreen(){stopDrone();cur=null;SFX.win();for(let r=0;r<3;r++)setTimeout(()=>showMoney(1000000),r*2200);V.innerHTML=`<div class="start"><div class="bigdisc"><b>مليونير<br>الرياضيات</b></div><h2 style="color:#ffdf7e;font-size:clamp(26px,4vw,44px)">🏆 مبروك! ربحت المليون 🏆</h2><p style="font-size:22px;margin:10px 0 18px">أجبت عن الأسئلة الخمسة عشر كلها إجابة صحيحة</p><button class="btn gold" onclick="newGame()">🔁 لاعب جديد</button><br><div class="credit">✨ إعداد الأستاذ: محمد الباز ✨</div></div>`}
+startScreen();
+</script>
+</body>
+</html>
